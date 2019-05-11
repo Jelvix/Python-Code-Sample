@@ -1,0 +1,11 @@
+{% extends 'admin/change_form.html' %}
+{% block content %}
+{{ block.super }}
+<script>
+    $("#id_company").on('change', function(){
+        const door_company_selected_pk = $("#id_company").val() || '';
+        const endpoint_url = '{% url 'get-persons-by-company' %}'+'?pk='+door_company_selected_pk;
+        $("#id_allowed_person").load(endpoint_url);
+    });
+</script>
+{% endblock %}

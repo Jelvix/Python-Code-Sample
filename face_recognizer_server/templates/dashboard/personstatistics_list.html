@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+<div class="container">
+    {{ date }}
+    <table class="table table-striped table-secondary mt-5">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            {% for date in dates %}
+            <th scope="col">{{ date }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for company, users in companies.items %}
+            <tr><th>{{company}}</th></tr>
+            {% for person_id, person_dict in users.items %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                {% for person_full_name, tracked_time in person_dict.items %}
+                <td>{{ person_full_name }}</td>
+                {% for tracked_time_per_day in tracked_time %}
+                <td>{{ tracked_time_per_day }}</td>
+                {% endfor %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

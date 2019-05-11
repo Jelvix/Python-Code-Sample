@@ -1,0 +1,78 @@
+version: '3.3'
+services:
+  django:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./face_recognizer_server:/app
+    ports:
+      - "$WEB_PORT:$WEB_PORT"
+    environment:
+      - DJANGO_SETTINGS_MODULE=face_recognizer_server.settings_prod
+    depends_on:
+      - postgres
+    command: /bin/bash -c "python manage.py migrate &&  python manage.py generate_person_statistic && uwsgi --http :8000 --module 'django.core.wsgi:application' --wsgi-file /app/face_recognizer_server/wsgi.py --processes 2 --static-map /static=/app/static"
+
+  postgres:
+    image: postgres:10.4
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - .:/app
+    ports:
+      - "$DB_PORT:$DB_PORT"
+
+  celery:
+    restart: always
+    build: .
+    env_file:
+      - .env
+    container_name: recognizer_celery
+    command: /bin/bash -c "make celery"
+    depends_on:
+      - postgres
+      - rabbitmq
+    volumes:
+      - ./face_recognizer_server:/app
+
+  celery_beat:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=face_recognizer_server.settings_prod
+    volumes:
+      - ./face_recognizer_server:/app
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+      - postgres
+      - django
+    command: /bin/bash -c "cd /app && make celery_beat"
+
+#   RabbitMQ - queue
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3-management
+    container_name: recognizer_rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=recognizer
+      - RABBITMQ_DEFAULT_PASS=recognizer
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # here, we can access rabbitmq management plug
+
+  nginx:
+    image: "nginx:1.13.5"
+    restart: always
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./face_recognizer_server/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - django

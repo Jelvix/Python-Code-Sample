@@ -1,0 +1,14 @@
+.idea/
+*.pyc
+*.avi
+*.MOV
+*.mov
+venv/
+.env
+face_recognizer_server/static/
+face_recognizer_server/dataset/datasets/*/
+face_recognizer_server/face_recognizer_src/temp_photos/*/
+face_recognizer_server/face_recognizer_src/persons_photos/*/
+face_recognizer_server/face_recognizer_src/persons_video/*/
+face_recognizer_server/celerybeat-schedule
+face_recognizer_server/celerybeat.pid
