@@ -1,4 +1,4 @@
-#FEATURES
+# FEATURES
 
 This app use Django and face recognition for stuff time tracking, you can simply add company and persons via admin panel. 
 When you've create company just add door instance with camera, and set what should that camera do: 
@@ -28,13 +28,13 @@ with open(image, 'rb') as file:
 
  
 
-#BUILD
+# BUILD
 
 *For production:* `docker-compose -f docker-compose-prod.yml build`
 
 *For local:* `docker-compose build`
 
-#RUN
+# RUN
 
 *For production:* `docker-compose -f docker-compose-prod.yml up`
 
@@ -44,7 +44,7 @@ with open(image, 'rb') as file:
 
 
 
-##Deploying in venv:
+## Deploying in venv:
 
 *dlib installation:* 
 
