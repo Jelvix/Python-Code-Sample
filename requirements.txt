@@ -2,7 +2,7 @@ opencv-python==3.4.4.19
 numpy==1.15.4
 face_recognition==1.2.3
 dlib==19.16.0
-Django==2.1.4
+Django==2.2.13
 djangorestframework==3.9.0
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
