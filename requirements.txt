@@ -12,7 +12,7 @@ scikit-image==0.14.1
 face-alignment==1.0.0
 celery==4.2.1
 amqp==2.3.2
-flower==0.9.2
+flower==1.2.0
 kombu==4.2.2.post1
 uWSGI==2.0.17.1
 django-timezone-field==3.0
